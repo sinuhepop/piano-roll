@@ -1,0 +1,4 @@
+interface Input {
+
+    id: string;
+}

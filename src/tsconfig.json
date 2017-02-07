@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"rootDir": "main/resources/typescript",
+		"outFile": "main/resources/js/all.js",
+		"strictNullChecks": true,
+		"sourceMap": true,
+		"inlineSourceMap": true,
+		"inlineSources": true,
+		"experimentalDecorators": true
+	},
+	"compileOnSave": true
+}
