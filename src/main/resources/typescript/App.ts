@@ -7,4 +7,4 @@ document.addEventListener('DOMContentLoaded', function() {
         window['output'] = output;
         window['piano'] = MidiUtils.createOutput('piano', 0);
     });
-});  
+});
