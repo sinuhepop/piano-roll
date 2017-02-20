@@ -1,4 +1,12 @@
-/// <reference path="ext/webmidi.d.ts" />
+/// <reference path="../ext/webmidi.d.ts" />
+
+class MidiMessage {
+    command: number;
+    channel: number;
+    type: number;
+    note: number;
+    velocity: number;
+}
 
 class MidiUtils {
 
@@ -41,8 +49,8 @@ class MidiUtils {
         return [x, m.note, m.velocity];
     };
 
-    static createInput(id: string, n: number, output: Output) {
-        return new MidiInput(id, this.inputs[n], output);
+    static createInput(id: string, n: number) {
+        return new MidiInput(id, this.inputs[n]);
     }
 
     static createOutput(id: string, n: number) {
@@ -59,58 +67,56 @@ class MidiUtils {
 
 }
 
-class MidiMessage {
-    command: number;
-    channel: number;
-    type: number;
-    note: number;
-    velocity: number;
-}
 
-class MidiInput implements Input {
 
-    readonly id;
+class MidiInput extends Input {
+
     private readonly input: WebMidi.MIDIInput;
-    private readonly output: Output;
 
-    constructor(id: string, input: WebMidi.MIDIInput, output: Output) {
-
-        this.id = id;
+    constructor(id: string, input: WebMidi.MIDIInput) {
+        super(id);
         this.input = input;
-        this.output = output;
 
         this.input.onmidimessage = evt => {
             var m = MidiUtils.decode(evt.data);
             var pitch = MidiUtils.toPitch(m.note);
             console.log(evt.data, m, pitch, Notes.toString(pitch));
             if (m.type == 128 || (m.type == 144 && m.velocity == 0)) {
-                output.stop(pitch);
+                this.stop(pitch);
             } else if (m.type == 144) {
-                output.start(pitch);
+                this.start(pitch, m.velocity / 127);
             }
         }
     }
 }
 
-class MidiOutput implements Output {
+class MidiOutput extends Output {
 
-    readonly id;
     private readonly output: WebMidi.MIDIOutput;
 
     constructor(id: string, output: WebMidi.MIDIOutput) {
-        this.id = id;
+        super(id);
         this.output = output;
     }
 
-    start(pitch: Pitch) {
-        var m: MidiMessage = { command: 9, channel: 0, type: 144, note: MidiUtils.fromPitch(pitch), velocity: 100 };
-        console.log(m, pitch);
-        this.output.send(MidiUtils.encode(m));
+    start(p: Pitch, velocity: number) {
+        this.output.send(MidiUtils.encode({ //
+            command: 9, //
+            channel: 0, //
+            type: 144, //
+            note: MidiUtils.fromPitch(p), // 
+            velocity: Math.trunc(velocity * 127) // 
+        }));
     }
 
-    stop(pitch: Pitch) {
-        var m: MidiMessage = { command: 9, channel: 0, type: 144, note: MidiUtils.fromPitch(pitch), velocity: 0 };
-        this.output.send(MidiUtils.encode(m));
+    stop(p: Pitch) {
+        this.output.send(MidiUtils.encode({ //
+            command: 9, //
+            channel: 0, //
+            type: 144, //
+            note: MidiUtils.fromPitch(p), // 
+            velocity: 0
+        }));
     }
 
 }

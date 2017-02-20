@@ -1,5 +1,5 @@
 
-class PianoKeyboard implements Output {
+class PianoKeyboard extends Output {
 
     private readonly canvas: HTMLCanvasElement;
     private readonly ctx: CanvasRenderingContext2D;
@@ -8,10 +8,9 @@ class PianoKeyboard implements Output {
     private readonly first: number;
     private readonly whiteKeyWidth: number;
 
-    id = 'pianoKeyboard';
 
     constructor(width: number, height: number, first: Pitch, last: Pitch) {
-
+        super('pianoKeyboard');
         this.first = Notes.asNumber(first);
         this.keys = Notes.asNumber(last) - Notes.asNumber(first) + 1;
         this.whiteKeyWidth = Math.trunc(width / this.keys);
