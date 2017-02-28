@@ -1,7 +1,7 @@
 class Connector {
 
-    protected readonly inputs: Input[];
-    protected readonly outputs: Output[];
+    protected readonly inputs: Input[] = [];
+    protected readonly outputs: Output[] = [];
 
 
     addInput(i: Input) {

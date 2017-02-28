@@ -1,29 +1,29 @@
 
 class PianoKeyboard extends Output {
 
-    private readonly canvas: HTMLCanvasElement;
+    private readonly canvas: Snap.Paper;
     private readonly ctx: CanvasRenderingContext2D;
 
     private readonly keys: number;
     private readonly first: number;
     private readonly whiteKeyWidth: number;
 
+    private readonly keysPainted: Array<Snap.Element> = [];
+
+
 
     constructor(width: number, height: number, first: Pitch, last: Pitch) {
         super('pianoKeyboard');
+
         this.first = Notes.asNumber(first);
         this.keys = Notes.asNumber(last) - Notes.asNumber(first) + 1;
         this.whiteKeyWidth = Math.trunc(width / this.keys);
 
-        this.canvas = document.createElement('canvas');
-        this.canvas.width = width;
-        this.canvas.height = height;
-        this.canvas.style.border = '3px solid';
-        this.ctx = this.canvas.getContext('2d') !;
-        this.drawKeys();
-        document.body.appendChild(this.canvas);
 
-        this.canvas.onclick = evt => console.log(evt)
+        this.canvas = Snap(width, height);
+        //        this.canvas.rect(10, 10, 100, 100);
+
+        this.drawKeys();
     }
 
     start(pitch: Pitch) {
@@ -35,25 +35,26 @@ class PianoKeyboard extends Output {
     }
 
     private drawKeys() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.ctx.lineWidth = 2;
-        this.ctx.strokeStyle = 'black';
-        for (var key = 0; key < this.keys; key++) {
-            var start = key * this.whiteKeyWidth;
-            this.ctx.rect(start, 0, this.whiteKeyWidth, this.canvas.height);
-            console.log(key, this.whiteKeyWidth, this.keys * this.whiteKeyWidth);
+        var attrs = { fill: '#fff', stroke: '#000', strokeWidth: 1 };
+        for (let key = 0; key < this.keys; key++) {
+            let start = key * this.whiteKeyWidth;
+            console.log(this.canvas.getBBox());
+            let rect = this.canvas.rect(start, 0, this.whiteKeyWidth, this.canvas.getBBox().height);
+            rect.attr(attrs);
+            this.keysPainted.push(rect);
+            rect.data('key', key);
+
+            rect.click((event: MouseEvent) => {
+                
+                console.log(key, event);
+            });
         }
-        this.ctx.stroke();
     }
 
     private drawPressed(p: Pitch, color: string) {
         let n = Notes.asNumber(p) - this.first;
-        let center = (n + 0.5) * this.whiteKeyWidth;
-        this.ctx.beginPath();
-        this.ctx.lineWidth = 0;
-        this.ctx.arc(center, this.canvas.height * 0.8, this.whiteKeyWidth * 0.3, 0, 2 * Math.PI, false);
-        this.ctx.fillStyle = color;
-        this.ctx.fill();
+        let key = this.keysPainted[n];
+        key.attr({ fill: color });
     }
 
 }

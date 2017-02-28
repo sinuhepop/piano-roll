@@ -20,3 +20,4 @@ class Note {
     velocity: number;
     duration: number | null;
 }
+
