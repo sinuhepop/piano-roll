@@ -1,8 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
     MidiUtils.initialize().then(() => {
-        var output = new PianoKeyboard(1232, 150, Notes.fromString('A1'), Notes.fromString('C9'));
+
+        let connector = new Connector();
+
+
+
+        var output = new PianoKeyboard(1232, 300, Notes.fromString('A1'), Notes.fromString('C9'));
+        connector.addOutput(output);
+
+
         if (MidiUtils.inputs.length > 0) {
-            var input = MidiUtils.createInput('defaultMidi', 0, output);
+            var input = MidiUtils.createInput('defaultMidi', 0);
+            connector.addInput(input);
         }
         window['output'] = output;
         window['piano'] = MidiUtils.createOutput('piano', 0);

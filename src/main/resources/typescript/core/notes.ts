@@ -1,26 +1,6 @@
-enum PitchClass {
-    C, Cs, D, Ds, E, F, Fs, G, Gs, A, As, B
-}
-
-enum Accidental {
-    Natural, Sharp, Flat
-}
-
-enum DurationType {
-    Real, Sheet
-}
-
-class Pitch {
-    pitchClass: PitchClass;
-    octave: number;
-}
-
-class Note {
-    pitch: Pitch;
-    duration: number;
-}
-
 abstract class Notes {
+
+    static readonly defaultVelocity = 0.7;
 
     private static latinNames = ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si'];
 
