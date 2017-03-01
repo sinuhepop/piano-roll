@@ -6,7 +6,6 @@ abstract class Output {
         this.id = id;
     }
 
-    abstract start(p: Pitch, velocity: number): void;
-    abstract stop(p: Pitch): void;
+    abstract receive(m: Message): void;
 
 }

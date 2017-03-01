@@ -1,33 +1,40 @@
 
 class PianoKeyboard extends Output {
 
+    private readonly dim: Dimensions;
     private readonly canvas: Snap.Paper;
-    private readonly ctx: CanvasRenderingContext2D;
 
-    private readonly keys: number;
-    private readonly first: number;
+
+    private readonly keyLength: number;
+    private readonly firstKey: number;
     private readonly whiteKeyWidth: number;
+    private readonly blackKeyWidth: number;
 
     private readonly keysPainted: Array<Snap.Element> = [];
 
 
 
-    constructor(width: number, height: number, first: Pitch, last: Pitch) {
+    constructor(dim: Dimensions, first: Pitch, last: Pitch) {
         super('pianoKeyboard');
 
-        this.first = Notes.asNumber(first);
-        this.keys = Notes.asNumber(last) - Notes.asNumber(first) + 1;
-        this.whiteKeyWidth = Math.trunc(width / this.keys);
+        this.dim = dim;
+        this.canvas = Snap(dim.width, dim.height);
 
 
-        this.canvas = Snap(width, height);
-        //        this.canvas.rect(10, 10, 100, 100);
+        this.firstKey = Notes.asNumber(first);
+        this.keyLength = Notes.asNumber(last) - Notes.asNumber(first) + 1;
+
+        this.whiteKeyWidth = Math.trunc(dim.width / this.keyLength);
+        this.blackKeyWidth = this.whiteKeyWidth * 0.7;
 
         this.drawKeys();
     }
 
-    start(pitch: Pitch) {
-        this.drawPressed(pitch, 'red');
+    receive(m: Message) {
+        switch (m.type) {
+            case 'start': return this.drawPressed(m.pitch, 'red');
+            case 'stop': return this.drawPressed(m.pitch, 'white');
+        }
     }
 
     stop(pitch: Pitch) {
@@ -36,23 +43,24 @@ class PianoKeyboard extends Output {
 
     private drawKeys() {
         var attrs = { fill: '#fff', stroke: '#000', strokeWidth: 1 };
-        for (let key = 0; key < this.keys; key++) {
+        for (let key = 0; key < this.keyLength; key++) {
             let start = key * this.whiteKeyWidth;
-            console.log(this.canvas.getBBox());
-            let rect = this.canvas.rect(start, 0, this.whiteKeyWidth, this.canvas.getBBox().height);
+            let rect = this.canvas.rect(start, 0, this.whiteKeyWidth, this.dim.height);
             rect.attr(attrs);
             this.keysPainted.push(rect);
             rect.data('key', key);
 
-            rect.click((event: MouseEvent) => {
-                
-                console.log(key, event);
-            });
+
+
+            //            rect.click((event: MouseEvent) => {
+            //                
+            //                console.log(key, event);
+            //            });
         }
     }
 
     private drawPressed(p: Pitch, color: string) {
-        let n = Notes.asNumber(p) - this.first;
+        let n = Notes.asNumber(p) - this.firstKey;
         let key = this.keysPainted[n];
         key.attr({ fill: color });
     }

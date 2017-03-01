@@ -82,9 +82,17 @@ class MidiInput extends Input {
             var pitch = MidiUtils.toPitch(m.note);
             console.log(evt.data, m, pitch, Notes.toString(pitch));
             if (m.type == 128 || (m.type == 144 && m.velocity == 0)) {
-                this.stop(pitch);
+                this.send({
+                    type: 'stop',
+                    pitch: pitch
+                });
             } else if (m.type == 144) {
-                this.start(pitch, m.velocity / 127);
+                this.send({
+                    type: 'start',
+                    pitch: pitch,
+                    velocity: m.velocity / 127,
+                    channel: 1
+                });
             }
         }
     }
@@ -117,6 +125,25 @@ class MidiOutput extends Output {
             note: MidiUtils.fromPitch(p), // 
             velocity: 0
         }));
+    }
+
+    receive(m: Message) {
+        switch (m.type) {
+            case 'start': return this.output.send(MidiUtils.encode({ //
+                command: 9, //
+                channel: 0, //
+                type: 144, //
+                note: MidiUtils.fromPitch(m.pitch), // 
+                velocity: Math.trunc(m.velocity * 127) // 
+            }));
+            case 'stop': return this.output.send(MidiUtils.encode({ //
+                command: 9,
+                channel: 0,
+                type: 144,
+                note: MidiUtils.fromPitch(m.pitch),
+                velocity: 0
+            }));
+        }
     }
 
 }

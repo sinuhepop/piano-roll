@@ -21,3 +21,6 @@ class Note {
     duration: number | null;
 }
 
+type Dimensions = { width: number, height: number };
+
+

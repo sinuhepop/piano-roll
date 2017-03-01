@@ -12,13 +12,24 @@ class Oscillator extends Output {
         this.osc.connect(ctx.destination);
     }
 
-    start(pitch: Pitch, velocity:number) {
+    start(pitch: Pitch, velocity: number) {
         this.osc.frequency.value = Notes.frequency(pitch);
         this.osc.start();
     }
 
     stop(pitch: Pitch) {
         this.osc.stop();
+    }
+
+    receive(m: Message) {
+        switch (m.type) {
+            case 'start':
+                this.osc.frequency.value = Notes.frequency(m.pitch);
+                this.osc.start();
+                break;
+            case 'stop': this.osc.stop();
+                break;
+        }
     }
 
 }

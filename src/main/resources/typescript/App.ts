@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-        var output = new PianoKeyboard(1232, 300, Notes.fromString('A1'), Notes.fromString('C9'));
+        var output = new PianoKeyboard({ width: 1232, height: 200 }, Notes.fromString('A1'), Notes.fromString('C9'));
         connector.addOutput(output);
 
 

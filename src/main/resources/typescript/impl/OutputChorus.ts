@@ -25,4 +25,19 @@ class OutputChorus extends Output {
         setTimeout(() => this.output.stop(pitch), this.delay * (this.times + 1));
     }
 
+    receive(m: Message) {
+        switch (m.type) {
+            case 'start':
+                let velocity = m.velocity;
+                for (let i = 0; i < this.times; i++) {
+                    velocity *= this.decay;
+                    setTimeout(() => this.output.start(m.pitch, velocity, this.delay * (i + 1)));
+                }
+                break;
+            case 'stop':
+                setTimeout(() => this.output.stop(m.pitch), this.delay * (this.times + 1));
+                break;
+        }
+    }
+
 }
