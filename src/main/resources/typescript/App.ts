@@ -2,18 +2,20 @@ document.addEventListener('DOMContentLoaded', function() {
     MidiUtils.initialize().then(() => {
 
         let connector = new Connector();
+        
+        connector.addOutput(new Logger());
 
-
-
-        var output = new PianoKeyboard({ width: 1232, height: 200 }, Notes.fromString('A1'), Notes.fromString('C9'));
-        connector.addOutput(output);
-
+        let piano = new PianoKeyboard(
+            { width: 1232, height: 200 },
+            Notes.fromString('A1'),
+            Notes.fromString('C9')
+        );
+        connector.addInput(piano);
+        connector.addOutput(piano);
 
         if (MidiUtils.inputs.length > 0) {
-            var input = MidiUtils.createInput('defaultMidi', 0);
-            connector.addInput(input);
+            connector.addInput(MidiUtils.createInput('midi', 0));
+            connector.addOutput(MidiUtils.createOutput('midi', 0));
         }
-        window['output'] = output;
-        window['piano'] = MidiUtils.createOutput('piano', 0);
     });
 });

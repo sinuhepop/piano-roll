@@ -80,7 +80,6 @@ class MidiInput extends Input {
         this.input.onmidimessage = evt => {
             var m = MidiUtils.decode(evt.data);
             var pitch = MidiUtils.toPitch(m.note);
-            console.log(evt.data, m, pitch, Notes.toString(pitch));
             if (m.type == 128 || (m.type == 144 && m.velocity == 0)) {
                 this.send({
                     type: 'stop',
@@ -105,26 +104,6 @@ class MidiOutput extends Output {
     constructor(id: string, output: WebMidi.MIDIOutput) {
         super(id);
         this.output = output;
-    }
-
-    start(p: Pitch, velocity: number) {
-        this.output.send(MidiUtils.encode({ //
-            command: 9, //
-            channel: 0, //
-            type: 144, //
-            note: MidiUtils.fromPitch(p), // 
-            velocity: Math.trunc(velocity * 127) // 
-        }));
-    }
-
-    stop(p: Pitch) {
-        this.output.send(MidiUtils.encode({ //
-            command: 9, //
-            channel: 0, //
-            type: 144, //
-            note: MidiUtils.fromPitch(p), // 
-            velocity: 0
-        }));
     }
 
     receive(m: Message) {

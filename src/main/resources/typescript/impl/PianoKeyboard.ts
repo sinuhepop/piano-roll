@@ -1,5 +1,7 @@
 
-class PianoKeyboard extends Output {
+class PianoKeyboard extends Input implements Output {
+
+    private static readonly blackKeyWidth = 0.58;
 
     private readonly dim: Dimensions;
     private readonly canvas: Snap.Paper;
@@ -11,8 +13,6 @@ class PianoKeyboard extends Output {
     private readonly blackKeyWidth: number;
 
     private readonly keysPainted: Array<Snap.Element> = [];
-
-
 
     constructor(dim: Dimensions, first: Pitch, last: Pitch) {
         super('pianoKeyboard');
@@ -50,12 +50,14 @@ class PianoKeyboard extends Output {
             this.keysPainted.push(rect);
             rect.data('key', key);
 
-
-
-            //            rect.click((event: MouseEvent) => {
-            //                
-            //                console.log(key, event);
-            //            });
+            rect.click((event: MouseEvent) => {
+                this.send({
+                    type: 'start',
+                    pitch: Notes.forNumber(key + this.firstKey),
+                    velocity: 0.7,
+                    channel: 1
+                });
+            });
         }
     }
 
