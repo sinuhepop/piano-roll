@@ -58,11 +58,11 @@ class MidiUtils {
     }
 
     static toPitch(code: number): Pitch {
-        return { octave: Math.trunc(code / 12), pitchClass: code % 12 };
+        return new Pitch(Math.trunc(code / 12), code % 12);
     }
 
     static fromPitch(pitch: Pitch) {
-        return pitch.octave * 12 + pitch.pitchClass;
+        return pitch.octave * 12 + pitch.class;
     }
 
 }
@@ -89,7 +89,7 @@ class MidiInput extends Input {
                 this.send({
                     type: 'start',
                     pitch: pitch,
-                    velocity: m.velocity / 127,
+                    velocity: Math.trunc(m.velocity / 127),
                     channel: 1
                 });
             }

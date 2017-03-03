@@ -5,7 +5,7 @@ class Logger extends Output {
     }
 
     receive(m: Message) {
-        console.log(Notes.toString(m.pitch), m);
+        console.log('' + m.pitch, m);
     }
 
 }

@@ -1,7 +1,8 @@
 
 class PianoKeyboard extends Input implements Output {
 
-    private static readonly blackKeyWidth = 0.58;
+    private static readonly blackKeyHeightRatio = 0.6;
+    private static readonly blackKeyWidthRatio = 0.58;
 
     private readonly dim: Dimensions;
     private readonly canvas: Snap.Paper;
@@ -25,7 +26,7 @@ class PianoKeyboard extends Input implements Output {
         this.keyLength = Notes.asNumber(last) - Notes.asNumber(first) + 1;
 
         this.whiteKeyWidth = Math.trunc(dim.width / this.keyLength);
-        this.blackKeyWidth = this.whiteKeyWidth * 0.7;
+        this.blackKeyWidth = this.whiteKeyWidth * PianoKeyboard.blackKeyWidthRatio;
 
         this.drawKeys();
     }
@@ -42,7 +43,7 @@ class PianoKeyboard extends Input implements Output {
     }
 
     private drawKeys() {
-        var attrs = { fill: '#fff', stroke: '#000', strokeWidth: 1 };
+        let attrs = { fill: '#fff', stroke: '#000', strokeWidth: 1 };
         for (let key = 0; key < this.keyLength; key++) {
             let start = key * this.whiteKeyWidth;
             let rect = this.canvas.rect(start, 0, this.whiteKeyWidth, this.dim.height);
@@ -54,10 +55,18 @@ class PianoKeyboard extends Input implements Output {
                 this.send({
                     type: 'start',
                     pitch: Notes.forNumber(key + this.firstKey),
-                    velocity: 0.7,
+                    velocity: Notes.defaultVelocity,
                     channel: 1
                 });
             });
+        }
+
+        attrs = { fill: '#000', stroke: '#000', strokeWidth: 1 };
+        for (let key = 1; key < this.keyLength; key++) {
+            let start = key * this.whiteKeyWidth - 0.5 * this.blackKeyWidth;
+            let rect = this.canvas.rect(start, 0, this.blackKeyWidth, this.dim.height * PianoKeyboard.blackKeyHeightRatio);
+            rect.attr(attrs);
+            this.keysPainted.push(rect);
         }
     }
 
