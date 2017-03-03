@@ -1,12 +1,11 @@
 
+const blackKeyHeightRatio = 0.6;
+const blackKeyWidthRatio = 0.45; //  0.58;
+
 class PianoKeyboard extends Input implements Output {
 
-    private static readonly blackKeyHeightRatio = 0.6;
-    private static readonly blackKeyWidthRatio = 0.58;
-
     private readonly dim: Dimensions;
-    private readonly canvas: Snap.Paper;
-
+    private readonly paper: Snap.Paper;
 
     private readonly keyLength: number;
     private readonly firstKey: number;
@@ -19,14 +18,17 @@ class PianoKeyboard extends Input implements Output {
         super('pianoKeyboard');
 
         this.dim = dim;
-        this.canvas = Snap(dim.width, dim.height);
+        this.paper = Snap(dim.width, dim.height);
+
+        this.firstKey = Notes.asNumber(first) - (first.isDiatonic() ? 0 : 1);
+        let lastKey = Notes.asNumber(last) + (last.isDiatonic() ? 0 : 1);
 
 
-        this.firstKey = Notes.asNumber(first);
+
         this.keyLength = Notes.asNumber(last) - Notes.asNumber(first) + 1;
 
         this.whiteKeyWidth = Math.trunc(dim.width / this.keyLength);
-        this.blackKeyWidth = this.whiteKeyWidth * PianoKeyboard.blackKeyWidthRatio;
+        this.blackKeyWidth = this.whiteKeyWidth * blackKeyWidthRatio;
 
         this.drawKeys();
     }
@@ -46,7 +48,7 @@ class PianoKeyboard extends Input implements Output {
         let attrs = { fill: '#fff', stroke: '#000', strokeWidth: 1 };
         for (let key = 0; key < this.keyLength; key++) {
             let start = key * this.whiteKeyWidth;
-            let rect = this.canvas.rect(start, 0, this.whiteKeyWidth, this.dim.height);
+            let rect = this.paper.rect(start, 0, this.whiteKeyWidth, this.dim.height);
             rect.attr(attrs);
             this.keysPainted.push(rect);
             rect.data('key', key);
@@ -55,7 +57,7 @@ class PianoKeyboard extends Input implements Output {
                 this.send({
                     type: 'start',
                     pitch: Notes.forNumber(key + this.firstKey),
-                    velocity: Notes.defaultVelocity,
+                    velocity: event.y / this.dim.height,
                     channel: 1
                 });
             });
@@ -64,7 +66,7 @@ class PianoKeyboard extends Input implements Output {
         attrs = { fill: '#000', stroke: '#000', strokeWidth: 1 };
         for (let key = 1; key < this.keyLength; key++) {
             let start = key * this.whiteKeyWidth - 0.5 * this.blackKeyWidth;
-            let rect = this.canvas.rect(start, 0, this.blackKeyWidth, this.dim.height * PianoKeyboard.blackKeyHeightRatio);
+            let rect = this.paper.rect(start, 0, this.blackKeyWidth, this.dim.height * blackKeyHeightRatio);
             rect.attr(attrs);
             this.keysPainted.push(rect);
         }
