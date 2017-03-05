@@ -2,12 +2,13 @@
 	"compilerOptions": {
 		"target": "es6",
 		"rootDir": "main/resources/typescript",
-		"outFile": "main/resources/js/all.js",
 		"strictNullChecks": true,
 		"sourceMap": true,
 		"inlineSourceMap": true,
 		"inlineSources": true,
-		"experimentalDecorators": true
+		"experimentalDecorators": true,
+		"outDir": "main/resources/js/generated"
 	},
-	"compileOnSave": true
+	"compileOnSave": true,
+	"buildOnSave": true
 }

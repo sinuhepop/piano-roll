@@ -1,0 +1,6 @@
+class Output {
+    constructor(id) {
+        this.id = id;
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoib3V0cHV0LmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vdHlwZXNjcmlwdC9jb3JlL291dHB1dC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUlJLFlBQVksRUFBRTtRQUNWLElBQUksQ0FBQyxFQUFFLEdBQUcsRUFBRSxDQUFDO0lBQ2pCLENBQUM7Q0FJSiIsInNvdXJjZXNDb250ZW50IjpbImFic3RyYWN0IGNsYXNzIE91dHB1dCB7XG5cbiAgICByZWFkb25seSBpZDogc3RyaW5nO1xuXG4gICAgY29uc3RydWN0b3IoaWQpIHtcbiAgICAgICAgdGhpcy5pZCA9IGlkO1xuICAgIH1cblxuICAgIGFic3RyYWN0IHJlY2VpdmUobTogTWVzc2FnZSk6IHZvaWQ7XG5cbn0iXX0=

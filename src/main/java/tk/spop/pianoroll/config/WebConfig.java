@@ -1,23 +1,41 @@
 package tk.spop.pianoroll.config;
 
+import java.util.Properties;
+
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.core.io.ClassPathResource;
 
+import lombok.SneakyThrows;
+import lombok.val;
+import ro.isdc.wro.http.ConfigurableWroFilter;
 import tk.spop.pianoroll.controller.HomeController;
 
 @Configuration
 @ComponentScan(basePackageClasses = HomeController.class)
-@EnableWebMvc
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig {
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/rsc/js/*") //
-				.addResourceLocations("classpath:/js/") //
-				.setCachePeriod(0);
+	@Bean
+	@SneakyThrows
+	public FilterRegistrationBean wroFilterProxy() {
+
+		val props = new Properties();
+		props.setProperty("minimizeEnabled", "false");
+		props.setProperty("resourceWatcherUpdatePeriod", "1");
+
+		val factory = new ResourceWroManagerFactory();
+		factory.setWroModelLocation(new ClassPathResource("wro.xml"));
+		factory.setProperties(props);
+
+		val filter = new ConfigurableWroFilter();
+		filter.setWroManagerFactory(factory);
+		filter.setProperties(props);
+
+		val bean = new FilterRegistrationBean(filter);
+		bean.addUrlPatterns("/rsc/*");
+		return bean;
 	}
 
 }

@@ -10,6 +10,6 @@ public class HomeController {
 	@RequestMapping("/")
 	@ResponseBody
 	public String home() {
-		return "<html><body><script src='rsc/js/snap.svg.js'></script><script src='rsc/js/all.js'></script></body>";
+		return "<html><body></script><script src='rsc/js/all.js'></script></body><html>";
 	}
 }
