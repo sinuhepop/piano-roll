@@ -1,6 +1,6 @@
 const englishNames = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
 const latinNames = ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si'];
-const diatonic = [0, 2, 4, 5, 7, 9, 11];
+const diatonics = [0, 2, 4, 5, 7, 9, 11];
 
 /*
 enum Accidental {
@@ -27,7 +27,7 @@ class Pitch {
     }
 
     isDiatonic() {
-        return diatonic.indexOf(this.class) > -1
+        return diatonics.indexOf(this.class) > -1
     }
 
     static fromString(s: string) {
@@ -45,8 +45,4 @@ class Note {
 }
 */
 
-type Dimensions = { width: number, height: number };
-
-
-
-
+type Size = { width: number, height: number };

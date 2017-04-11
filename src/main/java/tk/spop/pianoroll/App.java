@@ -4,7 +4,6 @@ import org.springframework.boot.Banner.Mode;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.ServerPropertiesAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.devtools.autoconfigure.LocalDevToolsAutoConfiguration;
 import org.springframework.context.annotation.Import;
@@ -12,7 +11,7 @@ import org.springframework.context.annotation.Import;
 import tk.spop.pianoroll.config.WebConfig;
 
 @ImportAutoConfiguration(classes = { //
-		ServerPropertiesAutoConfiguration.class, //
+		// ServerPropertiesAutoConfiguration.class, //
 		DispatcherServletAutoConfiguration.class, //
 		EmbeddedServletContainerAutoConfiguration.class, //
 		LocalDevToolsAutoConfiguration.class })

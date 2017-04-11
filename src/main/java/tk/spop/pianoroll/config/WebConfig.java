@@ -6,6 +6,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 
 import lombok.SneakyThrows;
@@ -14,6 +15,7 @@ import ro.isdc.wro.http.ConfigurableWroFilter;
 import tk.spop.pianoroll.controller.HomeController;
 
 @Configuration
+@Import(ServiceConfig.class)
 @ComponentScan(basePackageClasses = HomeController.class)
 public class WebConfig {
 
