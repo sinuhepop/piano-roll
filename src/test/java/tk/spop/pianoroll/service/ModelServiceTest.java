@@ -2,16 +2,28 @@ package tk.spop.pianoroll.service;
 
 import org.junit.Assert;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy.KebabCaseStrategy;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
+import tk.spop.pianoroll.service.impl.ModelServiceImpl;
 
 @Slf4j
 public class ModelServiceTest extends AbstractServiceTest {
 
-	@Autowired
+	// @Autowired
 	private ModelService service;
+
+//	public ModelServiceTest() {
+//		val bean = new XmlMapper();
+//		bean.setPropertyNamingStrategy(new KebabCaseStrategy());
+//		bean.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+//
+//		service = new ModelServiceImpl(bean);
+//	}
 
 	@Test
 	public void read() {

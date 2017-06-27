@@ -5,9 +5,8 @@ import lombok.Data;
 @Data
 public class Note {
 
-	private int id;
+	private int code;
 	private int start;
 	private int duration;
-	private int channel;
 
 }

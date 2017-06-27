@@ -7,10 +7,10 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import lombok.Data;
 
 @Data
-public class ScorePartwise {
+public class MxScorePartwise {
 
-	private Work work;
+	private MxWork work;
 
 	@JacksonXmlElementWrapper(useWrapping = false)
-	private List<Part> part;
+	private List<MxPart> part;
 }

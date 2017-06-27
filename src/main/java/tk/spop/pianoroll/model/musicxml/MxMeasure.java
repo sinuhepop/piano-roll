@@ -8,12 +8,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import lombok.Data;
 
 @Data
-public class Measure {
+public class MxMeasure {
 
-	private Attributes attributes;
+	private MxAttributes attributes;
 
 	@JacksonXmlElementWrapper(useWrapping = false)
-	private List<Note> note;
+	private List<MxNote> note;
 
 	private Direction direction;
 

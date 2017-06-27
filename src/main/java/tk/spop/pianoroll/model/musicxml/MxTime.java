@@ -3,9 +3,7 @@ package tk.spop.pianoroll.model.musicxml;
 import lombok.Data;
 
 @Data
-public class Pitch {
-
-	private String step;
-	private int octave;
-
+public class MxTime {
+	private int beats;
+	private int beatType;
 }

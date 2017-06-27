@@ -7,13 +7,8 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import lombok.Data;
 
 @Data
-public class Attributes {
-
-	private int divisions;
-	private Key key;
-	private Time time;
-	private int staves;
+public class MxPart {
 
 	@JacksonXmlElementWrapper(useWrapping = false)
-	private List<Clef> clef;
+	private List<MxMeasure> measure;
 }
